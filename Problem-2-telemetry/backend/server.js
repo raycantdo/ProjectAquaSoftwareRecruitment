@@ -1,13 +1,13 @@
-// backend/server.js
+
 const http = require('http');
 const fs = require('fs');
 
 
-// Load sensor data at startup
-let sensorDataFromFile = JSON.parse(fs.readFileSync('sensor_data_500.json', 'utf-8'));
-let telemetryData = []; // stores last 100 entries
 
-// Utility: Validate telemetry entry
+let sensorDataFromFile = JSON.parse(fs.readFileSync('sensor_data_500.json', 'utf-8'));
+let telemetryData = []; 
+
+
 function validateTelemetry(entry) {
     if (!entry) return false;
     const { depth, pressure, temperature, direction, timestamp } = entry;
@@ -19,7 +19,7 @@ function validateTelemetry(entry) {
     return true;
 }
 
-// --- Telemetry Simulation (Part C) ---
+
 let simulationIndex = 0;
 setInterval(() => {
     const entry = sensorDataFromFile[simulationIndex];
@@ -30,7 +30,7 @@ setInterval(() => {
     simulationIndex = (simulationIndex + 1) % sensorDataFromFile.length;
 }, 5000);
 
-// --- Helper to collect POST data ---
+
 function collectRequestData(req, callback) {
     let body = '';
     req.on('data', chunk => { body += chunk.toString(); });
@@ -44,13 +44,12 @@ function collectRequestData(req, callback) {
     });
 }
 
-// --- Create Server ---
 const server = http.createServer((req, res) => {
     const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow frontend
+    res.setHeader('Access-Control-Allow-Origin', '*'); 
 
-    // POST /api/telemetry
+    
     if (req.method === 'POST' && parsedUrl.pathname === '/api/telemetry') {
         collectRequestData(req, (err, data) => {
             if (err) {
@@ -70,7 +69,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // GET /api/telemetry/latest
+   
     else if (req.method === 'GET' && parsedUrl.pathname === '/api/telemetry/latest') {
         if (telemetryData.length === 0) {
             res.statusCode = 404;
@@ -81,7 +80,7 @@ const server = http.createServer((req, res) => {
         res.end(JSON.stringify(telemetryData[telemetryData.length - 1]));
     }
 
-    // GET /api/telemetry/history?limit=N
+   
     else if (req.method === 'GET' && parsedUrl.pathname === '/api/telemetry/history') {
         const limit = parseInt(parsedUrl.query.limit) || 10;
         const data = telemetryData.slice(-limit);
@@ -89,7 +88,7 @@ const server = http.createServer((req, res) => {
         res.end(JSON.stringify(data));
     }
 
-    // OPTIONS preflight (for CORS)
+   
     else if (req.method === 'OPTIONS') {
         res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -103,6 +102,6 @@ const server = http.createServer((req, res) => {
     }
 });
 
-// Start server
+
 const PORT = 3000;
 server.listen(PORT, () => console.log(`ROV Telemetry Server running on http://localhost:${PORT}`));
