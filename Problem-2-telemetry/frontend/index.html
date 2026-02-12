@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROV Telemetry Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
+        h1 { text-align: center; }
+        .telemetry { display: flex; justify-content: space-around; margin-bottom: 20px; }
+        .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); width: 20%; text-align: center; }
+        .status { font-weight: bold; padding: 5px 10px; border-radius: 5px; }
+        #depthChart { max-width: 800px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <h1>ROV Telemetry Dashboard</h1>
+
+    <div class="telemetry">
+        <div class="card">
+            <h3>Depth (m)</h3>
+            <p id="depth">0</p>
+        </div>
+        <div class="card">
+            <h3>Pressure (bar)</h3>
+            <p id="pressure">0</p>
+            <span id="pressureStatus" class="status">NORMAL</span>
+        </div>
+        <div class="card">
+            <h3>Temperature (°C)</h3>
+            <p id="temperature">0</p>
+        </div>
+        <div class="card">
+            <h3>Direction (°)</h3>
+            <p id="direction">0</p>
+        </div>
+        <div class="card">
+            <h3>Timestamp</h3>
+            <p id="timestamp">--</p>
+        </div>
+    </div>
+
+    <canvas id="depthChart"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
