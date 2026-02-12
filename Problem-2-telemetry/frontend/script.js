@@ -1,6 +1,6 @@
 const apiUrl = "http://localhost:3000/api/telemetry/latest";
 
-// HTML elements
+
 const depthEl = document.getElementById('depth');
 const pressureEl = document.getElementById('pressure');
 const tempEl = document.getElementById('temperature');
@@ -8,7 +8,7 @@ const dirEl = document.getElementById('direction');
 const tsEl = document.getElementById('timestamp');
 const statusEl = document.getElementById('pressureStatus');
 
-// Chart.js setup
+
 const ctx = document.getElementById('depthChart').getContext('2d');
 const chartData = {
     labels: [], // timestamps
@@ -31,21 +31,21 @@ const depthChart = new Chart(ctx, {
     }
 });
 
-// Function to fetch latest telemetry
+
 async function fetchTelemetry() {
     try {
         const res = await fetch(apiUrl);
         if (!res.ok) throw new Error("No telemetry data");
         const data = await res.json();
 
-        // Update numeric display
+       
         depthEl.textContent = data.depth.toFixed(2);
         pressureEl.textContent = data.pressure.toFixed(2);
         tempEl.textContent = data.temperature.toFixed(1);
         dirEl.textContent = data.direction.toFixed(1);
         tsEl.textContent = new Date(data.timestamp).toLocaleTimeString();
 
-        // Update pressure status
+       
         let status = 'NORMAL';
         let color = 'green';
         if (data.pressure >= 1.8 && data.pressure <= 2.0) { status = 'WARNING'; color = 'orange'; }
@@ -54,7 +54,7 @@ async function fetchTelemetry() {
         statusEl.style.backgroundColor = color;
         statusEl.style.color = 'white';
 
-        // Update chart
+      
         chartData.labels.push(new Date(data.timestamp).toLocaleTimeString());
         chartData.datasets[0].data.push(data.depth);
         if (chartData.labels.length > 20) { // show last 20 points
