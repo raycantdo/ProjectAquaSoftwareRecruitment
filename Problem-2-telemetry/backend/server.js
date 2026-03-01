@@ -82,7 +82,7 @@ const server = http.createServer((req, res) => {
 
    
     else if (req.method === 'GET' && parsedUrl.pathname === '/api/telemetry/history') {
-        const limit = parseInt(parsedUrl.query.limit) || 10;
+        const limit = parseInt(parsedUrl.searchParams.get("limit")) || 10;
         const data = telemetryData.slice(-limit);
         res.statusCode = 200;
         res.end(JSON.stringify(data));
