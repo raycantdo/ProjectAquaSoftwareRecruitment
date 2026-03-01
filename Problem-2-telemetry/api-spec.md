@@ -23,8 +23,9 @@ Telemetry packets must follow this structure:
   "depth": 12.4,
   "temperature": 18.7,
   "pressure": 2.1,
-  "battery": 86
+  "direction": 196.6
 }
+```
 ---
 
 ## 4. Endpoints
@@ -33,7 +34,7 @@ Telemetry packets must follow this structure:
 Stores incoming telemetry data into the FIFO buffer.
 
 Request
-POST /telemetry
+POST /api/telemetry
 
 Body Example
 {
@@ -57,14 +58,10 @@ Error Responses
 {
   "error": "Invalid telemetry data""Invalid JSON"
 }
-
-4.2 GET /telemetry
+-
+### 4.2 GET /api/telemetry/latest
 
 Returns the latest telemetry values from the FIFO buffer.
-
-Request
-GET /telemetry
-
 
 Response
 200 OK
@@ -82,8 +79,12 @@ Error
 {
   "error": "No telemetry data"
 }
-
-5. FIFO Buffer Logic
+### 4.3 GET /api/telemetry/history?limit=N
+- Returns the last N telemetry entries
+- Response:
+  - 200 OK → [ …array of last N entries… ]
+---
+## 5. FIFO Buffer Logic
 
 The server maintains a First-In-First-Out (FIFO) buffer.
 
