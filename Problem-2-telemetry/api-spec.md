@@ -115,9 +115,12 @@ A new entry is exposed every 5 seconds.
 
 ## 7. System Status Interpretation (Frontend Logic)
 Pressure 	Status
-< 1.8 bar	NORMAL
-1.8–2.0 bar	WARNING
-> 2.0 bar	CRITICAL
+ 
+ less than 1.8 bar	NORMAL
+
+ 1.8–2.0 bar	WARNING
+ 
+ greater than 2.0 bar	CRITICAL
 
 
 ## 8. Design Justification
